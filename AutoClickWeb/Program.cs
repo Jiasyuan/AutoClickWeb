@@ -10,7 +10,7 @@ namespace AutoClickWeb
     {
         static void Main(string[] args)
         {
-            List<AccountInfo> taskAccount = default(List<AccountInfo>);
+            List<AccountInfo> taskAccount = new List<AccountInfo>();
             string _account = string.Empty;
             string _passWord = string.Empty;
             string _companyID = "CTBC";
@@ -19,15 +19,16 @@ namespace AutoClickWeb
                 Console.WriteLine("輸入帳號");
                 _account = Console.ReadLine();
 
-                Console.WriteLine("輸入密碼");
-                _passWord = Console.ReadLine();
                 if (string.IsNullOrEmpty(_account))
                 {
                     break;
                 }
                 else
                 {
-                    taskAccount.Add(new AccountInfo {
+                    Console.WriteLine("輸入密碼");
+                    _passWord = Console.ReadLine();
+                    taskAccount.Add(new AccountInfo
+                    {
                         Account = _account,
                         Password = _passWord
                     });
@@ -38,9 +39,10 @@ namespace AutoClickWeb
             string _url = @"https://www.leadercampus.com.tw/desktop/login";//URL
             Random crandom = new Random();
             int classInt = 1150;
-            int papers =crandom.Next(80,100);
+            int papers = crandom.Next(80, 100);
             string baseUrl = @"https://www.leadercampus.com.tw/desktop/course/";
-            taskAccount.ForEach(item => {
+            taskAccount.ForEach(item =>
+            {
                 driver.Navigate().GoToUrl(_url);
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30000);
                 IWebElement btn = driver.FindElement(By.Id("agree_btn"));
@@ -56,14 +58,14 @@ namespace AutoClickWeb
                 Thread.Sleep(500);
                 inputAcc.Clear();
                 Thread.Sleep(500);
-                inputAcc.SendKeys(_account);
+                inputAcc.SendKeys(item.Account);
                 Thread.Sleep(500);
 
                 IWebElement inputPassWrod = driver.FindElement(By.Name("password"));
                 Thread.Sleep(500);
                 inputPassWrod.Clear();
                 Thread.Sleep(500);
-                inputPassWrod.SendKeys(_passWord);
+                inputPassWrod.SendKeys(item.Password);
                 Thread.Sleep(500);
                 IWebElement submitButton = driver.FindElement(By.ClassName("rbtn"));
                 Thread.Sleep(2000);
